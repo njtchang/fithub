@@ -36,8 +36,8 @@ def measure(box, pnglist, clothingtype):
     item_len = (half_len_index - index) * 2
     return item_len
 
-def process_images():
-    piece = 'pants'
+def process_images(genre):
+    piece = genre
     if piece == 'shirt':
         pic_path = 'C:\\Users\\stsha\\fithub\\backend\\tshirt.png'
         output_path = 'C:\\Users\\stsha\\fithub\\backend\\tshirtnobg.png'
