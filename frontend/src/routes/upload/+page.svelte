@@ -15,6 +15,17 @@
     });
 </script>
 
+<nav>
+    <ul>
+        <li>
+            <a href="/">Home</a>
+        </li>
+        <li>
+            <a href="/upload">Upload</a>
+        </li>
+    </ul>
+</nav>
+
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
@@ -67,10 +78,19 @@
         padding-bottom: 10px;
 
     }
-</style>
 
-{#if files && files[0]}
-    <p>
-        {files[0].name}
-    </p>
-{/if}
+    nav {
+        display: flex;
+        background-color: lightblue;
+    }
+    ul {
+        display: flex;
+        margin-top: 30px;
+        margin-left: auto;
+        list-style: none;
+        font-size: 2em;
+    }
+    li {
+        margin-right: 80px;
+    }
+</style>
