@@ -1,37 +1,96 @@
 <script>
+	/**
+	 * @type any
+	 */
+	let files;
 
+    const formData = new FormData(files)
+
+    fetch("https://localhost:5173/img", {
+        method: "POST",
+        body: formData,
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    });
 </script>
 
-<div class="instruction">
-    Upload Photo Here
+<nav>
+    <ul>
+        <li>
+            <a href="/">Home</a>
+        </li>
+        <li>
+            <a href="/upload">Upload</a>
+        </li>
+    </ul>
+</nav>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<div>
+    <div class="instruction">
+        Upload Photo Here
+    </div>
+    <form>
+        <div class = "buttonlabel">
+            <label for="file"></label>
+            <input
+                type="file"
+                id="file"
+                name="fileToUpload"
+                accept=".jpg, .jpeg, .png, .webp"
+                bind:files
+                required
+            />
+        </div>
+        <div class = "submit-button">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
 </div>
-
-<div></div>
-<div></div>
-<div></div>
-<div></div>
-<div></div>
-<div></div>
-<form>
-    <div class = "buttonlabel">
-        <label for="file"></label>
-        <input
-            type="file"
-            id="file"
-            name="fileToUpload"
-            accept=".jpg, .jpeg, .png, .webp"
-            required
-        />
-    <button type="submit">Submit</button>
-</form>
-
 
 <style>
     .buttonlabel {
         text-align: center;
+        padding-left: 65px;
     }
 
     .instruction {
         text-align: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .submit-button {
+        text-align: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+
+    }
+
+    nav {
+        display: flex;
+        background-color: lightblue;
+    }
+    ul {
+        display: flex;
+        margin-top: 30px;
+        margin-left: auto;
+        list-style: none;
+        font-size: 2em;
+    }
+    li {
+        margin-right: 80px;
     }
 </style>
