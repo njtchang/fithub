@@ -1,22 +1,37 @@
-<nav>
-    <ul>
-        <li>
-            <a href="/">Home</a>
-        </li>
-        <li>
-            <a href="/upload">Upload</a>
-        </li>
-    </ul>
-</nav>
+<script>
 
-<h1>Upload</h1>
+</script>
+
+<div class="instruction">
+    Upload Photo Here
+</div>
+
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<form>
+    <div class = "buttonlabel">
+        <label for="file"></label>
+        <input
+            type="file"
+            id="file"
+            name="fileToUpload"
+            accept=".jpg, .jpeg, .png, .webp"
+            required
+        />
+    <button type="submit">Submit</button>
+</form>
+
 
 <style>
-    ul {
-        display: flex;
-        list-style: none;
+    .buttonlabel {
+        text-align: center;
     }
-    li {
-        margin-right: 20px;
+
+    .instruction {
+        text-align: center;
     }
 </style>
