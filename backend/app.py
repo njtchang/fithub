@@ -19,9 +19,9 @@ def upload_file():
         uploaded_file.save(f'images/{uploaded_file.filename}')
     return redirect(url_for('/'))
 
-@app.route('/img/<filename>', methods=['GET'])
-def send_image(filename):
-    file_path = f'./images/{filename}.png'
+@app.route('/img', methods=['GET'])
+def send_image():
+    file_path = f'./images/shirt.png'
     return send_file(file_path)
 
 @app.route('/generate')
