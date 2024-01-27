@@ -17,12 +17,18 @@ def upload_file():
         if file_ext not in app.config['UPLOAD_EXTENSIONS']:
             abort(400)
         uploaded_file.save(f'images/{uploaded_file.filename}')
-    # return redirect(url_for(''))
+    return redirect(url_for('/'))
 
 @app.route('/img/<filename>', methods=['GET'])
 def send_image(filename):
     file_path = f'./images/{filename}.png'
     return send_file(file_path)
+
+@app.route('/generate')
+def generate_outfit():
+    shirt_id = request.args.get('shirtId', 0)
+    pants_id = request.args.get('pantsId', 0)
+    # image_layering.run(shirt_id, pants_id)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
