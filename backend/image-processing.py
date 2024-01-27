@@ -1,10 +1,6 @@
 from rembg import remove
 from PIL import Image
 
-output_path = 'C:\\Users\\stsha\\fithub\\backend\\tshirtnobg.png'
-shirt = True
-pants = not shirt
-
 #removes the background of the image
 def removebg(input_path):
     input = Image.open(input_path)
@@ -20,36 +16,44 @@ def crop(file, newpath):
     return box_size, array
 
 #finds point to measure clothing from 
-def measure(box, pnglist):
+def measure(box, pnglist, clothingtype):
     width = box[2] - box[0]
     height = box[3] - box[1]
     print(width, height)
 
     xmiddle = int(((width) // 2) + 1)
-    if shirt:
+    if clothingtype == 'shirt':
         ymeasure = int((5 * height) // 6)
-    if pants:
+    if clothingtype == 'pants':
         ymeasure = int(height // 6)
     print(xmiddle, ymeasure)
-    index = int((((ymeasure - 1) * width) + xmiddle) - 1)
+    index = (((ymeasure - 1) * width) + xmiddle) - 1
 
-    for pixel in pnglist[index:]:
-        if pixel == 0:
-            half_len_index = pnglist.index(pixel)
+    # for pixel in pnglist[index:]:
+    #     if pixel == 0:
+    #         half_len_index = pnglist.index(pixel)
+    #         break
+
+    for pixeli in range(len(pnglist))[index:]:
+        if pnglist[pixeli] == 0:
+            half_len_index = pixeli
             break
-    print(half_len_index, index)
-    if shirt:
-        len = (half_len_index - index) * 2
-    if pants:
-        len = (half_len_index - index) * 2
-    return len
+    
+    print(index, half_len_index)
+    item_len = (half_len_index - index) * 2
+    return item_len
 
 def main():
-    pic_path = 'C:\\Users\\stsha\\fithub\\backend\\tshirt.png'
-    output_path = 'C:\\Users\\stsha\\fithub\\backend\\tshirtnobg.png'
+    piece = 'pants'
+    if piece == 'shirt':
+        pic_path = 'C:\\Users\\stsha\\fithub\\backend\\tshirt.png'
+        output_path = 'C:\\Users\\stsha\\fithub\\backend\\tshirtnobg.png'
+    if piece == 'pants':
+        pic_path = 'C:\\Users\\stsha\\fithub\\backend\\pants.png'
+        output_path = 'C:\\Users\\stsha\\fithub\\backend\\pantsnobg.png'
     nobg = removebg(pic_path)
     info = crop(nobg, output_path)
-    length = measure(info[0], info[1])
+    length = measure(info[0], info[1], piece)
     return length
 
 print(main())
