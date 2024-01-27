@@ -1,4 +1,4 @@
-from flask import Flask, abort, request, redirect, url_for, send_file
+from flask import Flask, abort, render_template, request, redirect, url_for, send_file
 import os
 
 app = Flask(__name__)
@@ -7,7 +7,7 @@ app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png']
 
 @app.route('/')
 def index():
-    return 'Hello, World!'
+    return render_template('index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
