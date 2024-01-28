@@ -204,5 +204,6 @@
 	}
 	a:hover {
 		color: purple;
+		text-decoration: underline;
 	}
 </style>
