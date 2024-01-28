@@ -1,10 +1,11 @@
 from flask import Flask, abort, render_template, request, redirect, url_for, send_file, jsonify
-import json
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+import json
 import os
 from multiprocessing import Value
 from image_layering import create_file
-from flask_cors import CORS
+from PIL import Image
 
 
 counter = Value('i', 0)
@@ -33,7 +34,7 @@ class ClothingObj:
     def to_dict(self):
         return {'id': self.id, 'clothingType': self.clothingType, 'name': self.name}
 
-app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png']
+app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.jpeg']
 
 @app.route('/upload/<clothingType>/<clothingName>', methods=['POST'])
 def upload_file(clothingType, clothingName):
@@ -58,10 +59,15 @@ def upload_file(clothingType, clothingName):
                 db.session.add(new_clothing)
                 db.session.commit()
             except:
-                return 'There was an issue adding clothing'
+                return 'There was an issue adding clothing to db'
 
             print('uploaded!')
-            uploaded_file.save(f'images/{clothingType}{new_clothing.id}.png')
+            save_path = f'images/{clothingType}{new_clothing.id}.{file_ext}'
+            uploaded_file.save(save_path)
+            if file_ext == '.jpg':
+                img = Image.open(save_path)
+                img.save(f'images/{clothingType}{new_clothing.id}.png')
+                os.remove(save_path)
 
     return redirect('http://localhost:5173')
 
@@ -95,3 +101,8 @@ def deleteClothing(clothingId):
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
+
+
+# TODO: jpg to png converter
+# TODO: delete button
+# TODO: deploy
