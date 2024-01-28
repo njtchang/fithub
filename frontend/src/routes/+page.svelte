@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nova Square">
 
 <script>
-// @ts-nocheck
+	// @ts-nocheck
 	let shirtIsOpen = false;
 	let pantIsOpen = false;
 
@@ -15,10 +15,42 @@
 		}
 		let pantsItems = [];
 		for (let i = 0; i < data.pantsCount; i++) {
-			pantsItems.push('Pant ' + i+1);
+			pantsItems.push('Pant ' + (i+1));
 		}
-		return {shirtItems: shirtItems, pantsItems, pantsItems};
+		return { shirtItems: shirtItems, pantsItems: pantsItems };
 	}
+
+	let selectedShirt = -1;
+	let selectedPants = -1;
+
+	const selectShirt = (id) => {
+		selectedShirt = id;
+		console.log(selectedShirt);
+	}
+	const selectPants = (id) => {
+		selectedPants = id;
+	}
+
+	function generateImage() {
+        const formData = new FormData();
+        formData.append("shirtId", selectedShirt);
+        formData.append("pantsId", selectedPants);
+        const requestOptions = {
+            method: "POST",
+			headers: {
+				'Content-Type': 'image/png',
+			}
+        };
+        console.log(requestOptions);
+
+		fetch("http://localhost:5001/generate", requestOptions)
+		.then(response => response.blob())
+		.then(blob => {
+			const url = URL.createObjectURL(blob);
+			console.log(url);
+			document.querySelector("#combo_outfit").src = url;
+		});
+    }
 
 </script>
 
@@ -45,7 +77,7 @@
 			<header>
 				<h1>Outfit</h1>
 			</header>
-			<img src="src/lib/pictures/combo_outfit.png" alt="outfit" />
+			<img id="combo_outfit" src="src/lib/pictures/combo_outfit.png" alt="outfit" />
 		</div>
 		<div class="gallery-side">
 			<header>
@@ -61,7 +93,7 @@
 						{#if shirtIsOpen}
 							<div class="dropbuttons">
 								{#each data.shirtItems as item, index}
-									<button value={index} on:click={() => console.log(index)}>{item}</button>
+									<button class={index === selectedShirt} value={index} on:click={() => selectShirt(index)}>{item}</button>
 								{/each}
 							</div>
 						{/if}
@@ -75,7 +107,7 @@
 									<!-- <a href="#top">
 						{pitem}
 						</a> -->
-									<button value={index} on:click={() => console.log(index)}>{item}</button>
+									<button class={index === selectedPants} value={index} on:click={() => selectPants(index)}>{item}</button>
 								{/each}
 							</div>
 						{/if}
@@ -86,7 +118,9 @@
             <p>&nbsp;</p>
             <p>&nbsp;</p>
             <div class="generate">
-                <button>Generate!</button>
+				<form method="GET" action="http://localhost:5173">
+					<button type="submit" on:click={generateImage}>Generate!</button>
+				</form>
             </div>
 		</div>
 	</div>
@@ -191,6 +225,9 @@
     button {
         font-family: "Nova Square", sans-serif;
     }
+	button.highlight {
+		background-color: lightblue;
+	}
     div.nav-logo {
         margin-left: 30px;
         margin-bottom: 15px;
