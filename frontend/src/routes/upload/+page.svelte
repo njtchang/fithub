@@ -69,6 +69,9 @@
 				required
 			/>
 		</div>
+        <div class="text-field">
+            Enter Description: <input type="text">
+        </div>
 		<div class="submit-button">
 			<button type="submit" on:click={() => sendImage('shirt')}>Submit</button>
 		</div>
@@ -84,6 +87,9 @@
 			<label for="file"></label>
 			<input type="file" id="pantsfile" name="file" accept=".jpg, .jpeg, .png, .webp" required />
 		</div>
+        <div class="text-field">
+            Enter Description: <input type="text">
+        </div>
 		<div class="submit-button">
 			<button type="submit" on:click={() => sendImage('pants')}>Submit</button>
 		</div>
@@ -91,6 +97,11 @@
 </div>
 
 <style>
+    .text-field {
+        text-align:center;
+        font-family: 'Nova Square', sans-serif;
+        padding-top: 10px;
+    }
 	.block-text {
 		font-family: 'Nova Square', sans-serif;
 		font-size: 20px;
