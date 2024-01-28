@@ -51,7 +51,6 @@
 			document.querySelector("#combo_outfit").src = url;
 		});
     }
-
 </script>
 
 <nav>
@@ -80,6 +79,13 @@
 			<img id="combo_outfit" src="src/lib/pictures/combo_outfit.png" alt="outfit" />
 		</div>
 		<div class="gallery-side">
+			<div class="directions-title">
+				DIRECTIONS
+			</div>
+			<div class="directions-body">
+				Click the dropdown menus to access shirts and pants. Once you have chosen your desired combination, 
+				click the generate button to create your new outfit!
+			</div>
 			<header>
 				<h1>Gallery</h1>
 			</header>
@@ -89,7 +95,6 @@
 				{:then data}
 					<div>
 						<button on:click={() => (shirtIsOpen = !shirtIsOpen)}>Shirts</button>
-
 						{#if shirtIsOpen}
 							<div class="dropbuttons">
 								{#each data.shirtItems as item, index}
@@ -122,6 +127,13 @@
 					<button type="submit" on:click={generateImage}>Generate!</button>
 				</form>
             </div>
+			<!-- <div class="directions-title">
+				DIRECTIONS
+			</div>
+			<div class="directions-body">
+				Click the dropdown menus to access shirts and pants. Once you have chosen your desired combination, 
+				click the generate button to create your new outfit!
+			</div> -->
 		</div>
 	</div>
 </body>
@@ -148,7 +160,7 @@
 	}
 	div.outfit-side > img {
 		width: 50%;
-		height: 75%;
+		height: 700px;
 	}
 	div.gallery-side {
 		width: 50%;
@@ -159,6 +171,16 @@
         border: solid rgb(117, 78, 64) 5px;
         border-radius: 12px;
         color: rgb(69, 49, 42);
+	}
+	.directions-title {
+		margin-top: 40px;
+		font-weight: bold;
+		font-size: 40px;
+	}
+	.directions-body {
+		margin: 50px;
+		margin-top: 30px;
+		font-size: 20px;
 	}
     div.menu {
         display: grid;
