@@ -23,21 +23,21 @@ def scale_action(filepath, factor):
 
 def create_file():
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    shirtpath = str(os.path.join(current_directory, 'tshirtnobg.png'))
-    pantspath = str(os.path.join(current_directory, 'pantsnobg.png'))
+    shirtpath = str(os.path.join(current_directory, 'images', 'tshirtnobg.png'))
+    pantspath = str(os.path.join(current_directory, 'images', 'pantsnobg.png'))
     shirtlen = int(image_processing.process_images('shirt'))
     pantslen = int(image_processing.process_images('pants'))
 
     if shirtlen > pantslen:
         resized_pic = (scale_action(shirtpath, scaling_factor(shirtlen, pantslen, shirtpath, pantspath)[0]))
-        resized_pic.save(str(os.path.join(current_directory, 'shrink_shirt.png')))
-        shrinkshirtpath = str(os.path.join(current_directory, 'shrink_shirt.png'))
+        resized_pic.save(str(os.path.join(current_directory, 'images', 'shrink_shirt.png')))
+        shrinkshirtpath = str(os.path.join(current_directory, 'images', 'shrink_shirt.png'))
         images = [Image.open(x) for x in [shrinkshirtpath, pantspath]]
 
     if pantslen > shirtlen:
         resized_pic = (scale_action(pantspath, scaling_factor(shirtlen, pantslen, shirtpath, pantspath)[0]))
-        resized_pic.save(str(os.path.join(current_directory, 'shrink_pants.png')))
-        shrinkpantspath = str(os.path.join(current_directory, 'shrink_pants.png'))
+        resized_pic.save(str(os.path.join(current_directory, 'images', 'shrink_pants.png')))
+        shrinkpantspath = str(os.path.join(current_directory, 'images', 'shrink_pants.png'))
         images = [Image.open(x) for x in [shirtpath, shrinkpantspath]]
 
     widths, heights = zip(*(i.size for i in images))
@@ -50,7 +50,7 @@ def create_file():
         finalpng.paste(im, (x_offset, y_offset))
         y_offset += images[0].height
 
-    finalpath = str(os.path.join(current_directory, 'combo_outfit.png'))
+    finalpath = str(os.path.join(current_directory, 'images', 'combo_outfit.png'))
     finalpng.save(finalpath)
 
     return(finalpng)
