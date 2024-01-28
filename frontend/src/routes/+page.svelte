@@ -48,12 +48,12 @@
 </script>
 
 <nav>
-	<div class="nav-logo">
+	<!-- <div class="nav-logo">
 		<img src="src/lib/pictures/logo.png" alt="Your Logo" />
 	</div>
     <div class="title">
         <img src="src/lib/pictures/title.png" alt="title" />
-    </div>
+    </div> -->
 	<ul>
 		<li>
 			<a href="/">Home</a>
@@ -63,6 +63,15 @@
 		</li>
 	</ul>
 </nav>
+
+<div class="scroll-bg">
+    <div class="nav-logo">
+        <img src="src/lib/pictures/logo.png" alt="Your Logo" />
+    </div>
+    <div class="title">
+        <img src="src/lib/pictures/title.png" alt="title" />
+    </div>
+</div>
 
 <body>
 	<div class="row">
@@ -138,6 +147,15 @@
 		length: 200px;
 		margin: 0;
 	}
+    .scroll-bg {
+        /* background-image: url("/src/lib/pictures/clothing-store.png"); */
+        background-image: linear-gradient(rgba(255, 255, 255, 0.695),rgba(145, 231, 235, 0.5)) , url("/src/lib/pictures/future-store.jpg");
+        min-height: 700px;
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
 	div.row {
 		display: flex;
         font-family: "Nova Square", sans-serif;
@@ -235,8 +253,10 @@
 	nav {
 		display: flex;
 		background-color: lightblue;
+        /* background-image: url("/src/lib/pictures/future-background.jpg");
+        background-position: center; */
         font-family: "Nova Square", sans-serif;
-        border-radius: 12px;
+        text-align: center;
 	}
     button {
         font-family: "Nova Square", sans-serif;
@@ -249,22 +269,32 @@
         margin-bottom: 15px;
     }
     div.title>img{
-        width: 750px;
-        height: 150px;
+        width: 1250px;
+        height: 250px;
         z-index: -1;
-        margin-left: 90px;
-        margin-top: 25px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        /* width: 40%; */
+
     }
 	ul {
 		display: flex;
-		margin-top: 30px;
-		margin-left: auto;
+        justify-content: center;
+        overflow: hidden;
+        margin: auto;
+		/* margin-top: 30px; */
+		/* margin-left: auto; */
 		list-style: none;
 		font-size: 35px;
 	}
 	li {
-		margin-right: 80px;
-        margin-top: 40px;
+		/* margin-right: 80px; */
+        /* margin-top: 40px; */
+        margin-left: 100px;
+        margin-right: 100px;
+        margin-top: 20px;
+        margin-bottom: 20px;
 	}
     a {
         text-decoration: none;
@@ -275,6 +305,7 @@
     }
     a:hover {
         color: purple;
+        text-decoration: underline;
     }
 	h1 {
 		margin-top: 20px;
