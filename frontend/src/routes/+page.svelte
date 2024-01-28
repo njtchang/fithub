@@ -1,11 +1,25 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nova Square">
 
 <script>
+// @ts-nocheck
 	let shirtIsOpen = false;
 	let pantIsOpen = false;
-	let idNum = 0;
-	let shirtItems = ['Shirt 1', 'Shirt 2', 'Shirt 3'];
-	let pantItems = ['Pant 1', 'Pant 2', 'Pant 3', 'pant 4'];
+
+	async function getClothingCounts() {
+		const res = await fetch('http://localhost:5001/clothingCounts');
+		const data = await res.json();
+		
+		let shirtItems = [];
+		for (let i = 0; i < data.shirtCount; i++) {
+			shirtItems.push('Shirt ' + (i+1));
+		}
+		let pantsItems = [];
+		for (let i = 0; i < data.pantsCount; i++) {
+			pantsItems.push('Pant ' + i+1);
+		}
+		return {shirtItems: shirtItems, pantsItems, pantsItems};
+	}
+
 </script>
 
 <nav>
@@ -35,31 +49,35 @@
 				<h1>Gallery</h1>
 			</header>
 			<div class="menu">
-				<div>
-					<button on:click={() => (shirtIsOpen = !shirtIsOpen)}>Shirts</button>
+				{#await getClothingCounts()}
+					<p>Loading...</p>
+				{:then data}
+					<div>
+						<button on:click={() => (shirtIsOpen = !shirtIsOpen)}>Shirts</button>
 
-					{#if shirtIsOpen}
-						<div class="dropbuttons">
-							{#each shirtItems as item, index}
-								<button value={index} on:click={() => console.log(index)}>{item}</button>
-							{/each}
-						</div>
-					{/if}
-				</div>
-				<div>
-					<button on:click={() => (pantIsOpen = !pantIsOpen)}>Pants</button>
+						{#if shirtIsOpen}
+							<div class="dropbuttons">
+								{#each data.shirtItems as item, index}
+									<button value={index} on:click={() => console.log(index)}>{item}</button>
+								{/each}
+							</div>
+						{/if}
+					</div>
+					<div>
+						<button on:click={() => (pantIsOpen = !pantIsOpen)}>Pants</button>
 
-					{#if pantIsOpen}
-						<div class="dropbuttons">
-							{#each pantItems as item, index}
-								<!-- <a href="#top">
-                    {pitem}
-                    </a> -->
-								<button value={index} on:click={() => console.log(index)}>{item}</button>
-							{/each}
-						</div>
-					{/if}
-				</div>
+						{#if pantIsOpen}
+							<div class="dropbuttons">
+								{#each data.pantsItems as item, index}
+									<!-- <a href="#top">
+						{pitem}
+						</a> -->
+									<button value={index} on:click={() => console.log(index)}>{item}</button>
+								{/each}
+							</div>
+						{/if}
+					</div>
+				{/await}
 			</div>
 		</div>
 	</div>
