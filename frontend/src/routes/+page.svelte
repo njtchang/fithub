@@ -5,7 +5,7 @@
 	let pantIsOpen = false;
 	let idNum = 0;
 	let shirtItems = ['Shirt 1', 'Shirt 2', 'Shirt 3'];
-	let pantItems = ['Pant 1', 'Pant 2', 'Pant 3', 'pant 4'];
+	let pantItems = ['Pant 1', 'Pant 2', 'Pant 3', 'pant 4', '5', '6', '7', '8'];
 </script>
 
 <nav>
@@ -34,6 +34,13 @@
 			<img src="src/lib/pictures/combo_outfit.png" alt="outfit" />
 		</div>
 		<div class="gallery-side">
+			<div class="directions-title">
+				DIRECTIONS
+			</div>
+			<div class="directions-body">
+				Click the dropdown menus to access shirts and pants. Once you have chosen your desired combination, 
+				click the generate button to create your new outfit!
+			</div>
 			<header>
 				<h1>Gallery</h1>
 			</header>
@@ -45,7 +52,7 @@
 					{#if shirtIsOpen}
 						<div class="dropbuttons">
 							{#each shirtItems as item, index}
-								<button value={index} on:click={() => console.log(index)}>{item}</button>
+								<button value={index} on:click={() => (shirtIsOpen = !shirtIsOpen)}>{item}</button>
 							{/each}
 						</div>
 					{/if}
@@ -56,10 +63,7 @@
 					{#if pantIsOpen}
 						<div class="dropbuttons">
 							{#each pantItems as item, index}
-								<!-- <a href="#top">
-                    {pitem}
-                    </a> -->
-								<button value={index} on:click={() => console.log(index)}>{item}</button>
+								<button value={index} on:click={() => (pantIsOpen = !pantIsOpen)}>{item}</button>
 							{/each}
 						</div>
 					{/if}
@@ -71,6 +75,13 @@
             <div class="generate">
                 <button>Generate!</button>
             </div>
+			<!-- <div class="directions-title">
+				DIRECTIONS
+			</div>
+			<div class="directions-body">
+				Click the dropdown menus to access shirts and pants. Once you have chosen your desired combination, 
+				click the generate button to create your new outfit!
+			</div> -->
 		</div>
 	</div>
 </body>
@@ -97,7 +108,7 @@
 	}
 	div.outfit-side > img {
 		width: 50%;
-		height: 75%;
+		height: 700px;
 	}
 	div.gallery-side {
 		width: 50%;
@@ -108,6 +119,16 @@
         border: solid rgb(117, 78, 64) 5px;
         border-radius: 12px;
         color: rgb(69, 49, 42);
+	}
+	.directions-title {
+		margin-top: 40px;
+		font-weight: bold;
+		font-size: 40px;
+	}
+	.directions-body {
+		margin: 50px;
+		margin-top: 30px;
+		font-size: 20px;
 	}
     div.menu {
         display: grid;
