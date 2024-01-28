@@ -21,12 +21,12 @@ def scale_action(filepath, factor):
     img = img.resize(newsize)
     return img
 
-def create_file():
+def create_file(shirt_id, pants_id):
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    shirtpath = str(os.path.join(current_directory, 'images', 'tshirtnobg.png'))
+    shirtpath = str(os.path.join(current_directory, 'images', 'shirtnobg.png'))
     pantspath = str(os.path.join(current_directory, 'images', 'pantsnobg.png'))
-    shirtlen = int(image_processing.process_images('shirt'))
-    pantslen = int(image_processing.process_images('pants'))
+    shirtlen = int(image_processing.process_images('shirt', shirt_id))
+    pantslen = int(image_processing.process_images('pants', pants_id))
 
     if shirtlen > pantslen:
         resized_pic = (scale_action(shirtpath, scaling_factor(shirtlen, pantslen, shirtpath, pantspath)[0]))
@@ -54,5 +54,3 @@ def create_file():
     finalpng.save(finalpath)
 
     return(finalpng)
-
-create_file()
