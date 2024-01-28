@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nova Square">
 
 <script>
 // @ts-nocheck
@@ -27,17 +27,20 @@
 </script>
 
 <nav>
-    <div class="nav-logo">
-        <img src="src/lib/pictures/logo.png" alt="Your Logo" />
+	<div class="nav-logo">
+		<img src="src/lib/pictures/logo.png" alt="Your Logo" />
+	</div>
+    <div class="title">
+        <img src="src/lib/pictures/title.png" alt="title" />
     </div>
-    <ul>
-        <li>
-            <a href="/">Home</a>
-        </li>
-        <li>
-            <a href="/upload">Upload</a>
-        </li>
-    </ul>
+	<ul>
+		<li>
+			<a href="/">Home</a>
+		</li>
+		<li>
+			<a href="/upload">Upload</a>
+		</li>
+	</ul>
 </nav>
 
 <p>&nbsp;</p>
@@ -117,21 +120,43 @@
     }
 
     nav {
-        display: flex;
-        background-color: lightblue;
+		display: flex;
+		background-color: lightblue;
+        font-family: "Nova Square", sans-serif;
+        border-radius: 12px;
+	}
+    div.nav-logo {
+        margin-left: 30px;
+        margin-bottom: 15px;
     }
-    ul {
-        display: flex;
-        margin-top: 30px;
-        margin-left: auto;
-        list-style: none;
-        font-size: 2em;
+    div.title>img{
+        width: 750px;
+        height: 150px;
+        z-index: -1;
+        margin-left: 90px;
+        margin-top: 25px;
     }
-    li {
-        margin-right: 80px;
-        font-weight: 900;
-        font-family: "Quicksand", sans-serif;
-        color: blue;
+
+	ul {
+		display: flex;
+		margin-top: 30px;
+		margin-left: auto;
+		list-style: none;
+		font-size: 35px;
+	}
+	li {
+		margin-right: 80px;
+        margin-top: 40px;
+	}
+    a {
+        text-decoration: none;
+        color: darkblue;
+    }
+    a:focus {
+        color: rgb(87, 87, 205);
+    }
+    a:hover {
+        color: purple;
     }
 
 </style>
