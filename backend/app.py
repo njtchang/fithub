@@ -2,11 +2,13 @@ from flask import Flask, abort, render_template, request, redirect, url_for, sen
 import os
 from multiprocessing import Value
 from image_layering import create_file
+from flask_cors import CORS
 
 
 shirt_counter = Value('i', 0)
 pants_counter = Value('i', 0)
 app = Flask(__name__)
+CORS(app)
 
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png']
 
@@ -35,7 +37,8 @@ def upload_file(clothingName):
                 pants_counter.value += 1
                 print('pants', count)
 
-        uploaded_file.save(f'images/{clothingName}{count}.png')
+        if count <= 20:
+            uploaded_file.save(f'images/{clothingName}{count}.png')
 
     return redirect('http://localhost:5173')
 
@@ -45,6 +48,16 @@ def generate_outfit():
     pants_id = request.args.get('pantsId', 0)
     create_file(shirt_id, pants_id)
     return send_file(f'./images/combo_outfit.png')
+
+@app.route('/clothingCounts', methods=['GET'])
+def clothing_counts():
+    with shirt_counter.get_lock():
+        shirt_count = shirt_counter.value
+        print(shirt_count)
+    with pants_counter.get_lock():
+        pants_count = pants_counter.value
+    return {'shirtCount': shirt_count, 'pantsCount': pants_count}
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

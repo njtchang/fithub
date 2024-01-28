@@ -1,11 +1,56 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nova Square">
 
 <script>
+	// @ts-nocheck
 	let shirtIsOpen = false;
 	let pantIsOpen = false;
-	let idNum = 0;
-	let shirtItems = ['Shirt 1', 'Shirt 2', 'Shirt 3'];
-	let pantItems = ['Pant 1', 'Pant 2', 'Pant 3', 'pant 4', '5', '6', '7', '8'];
+
+	async function getClothingCounts() {
+		const res = await fetch('http://localhost:5001/clothingCounts');
+		const data = await res.json();
+		
+		let shirtItems = [];
+		for (let i = 0; i < data.shirtCount; i++) {
+			shirtItems.push('Shirt ' + (i+1));
+		}
+		let pantsItems = [];
+		for (let i = 0; i < data.pantsCount; i++) {
+			pantsItems.push('Pant ' + (i+1));
+		}
+		return { shirtItems: shirtItems, pantsItems: pantsItems };
+	}
+
+	let selectedShirt = -1;
+	let selectedPants = -1;
+
+	const selectShirt = (id) => {
+		selectedShirt = id;
+		console.log(selectedShirt);
+	}
+	const selectPants = (id) => {
+		selectedPants = id;
+	}
+
+	function generateImage() {
+        const formData = new FormData();
+        formData.append("shirtId", selectedShirt);
+        formData.append("pantsId", selectedPants);
+        const requestOptions = {
+            method: "POST",
+			headers: {
+				'Content-Type': 'image/png',
+			}
+        };
+        console.log(requestOptions);
+
+		fetch("http://localhost:5001/generate", requestOptions)
+		.then(response => response.blob())
+		.then(blob => {
+			const url = URL.createObjectURL(blob);
+			console.log(url);
+			document.querySelector("#combo_outfit").src = url;
+		});
+    }
 </script>
 
 <nav>
@@ -31,7 +76,7 @@
 			<header>
 				<h1>Outfit</h1>
 			</header>
-			<img src="src/lib/pictures/combo_outfit.png" alt="outfit" />
+			<img id="combo_outfit" src="src/lib/pictures/combo_outfit.png" alt="outfit" />
 		</div>
 		<div class="gallery-side">
 			<div class="directions-title">
@@ -45,35 +90,42 @@
 				<h1>Gallery</h1>
 			</header>
 			<div class="menu">
-				<div>
-                    <button on:click={() => (shirtIsOpen = !shirtIsOpen)}>Shirt
-                    </button>
+				{#await getClothingCounts()}
+					<p>Loading...</p>
+				{:then data}
+					<div>
+						<button on:click={() => (shirtIsOpen = !shirtIsOpen)}>Shirts</button>
+						{#if shirtIsOpen}
+							<div class="dropbuttons">
+								{#each data.shirtItems as item, index}
+									<button class={index === selectedShirt} value={index} on:click={() => selectShirt(index)}>{item}</button>
+								{/each}
+							</div>
+						{/if}
+					</div>
+					<div>
+						<button on:click={() => (pantIsOpen = !pantIsOpen)}>Pants</button>
 
-					{#if shirtIsOpen}
-						<div class="dropbuttons">
-							{#each shirtItems as item, index}
-								<button value={index} on:click={() => (shirtIsOpen = !shirtIsOpen)}>{item}</button>
-							{/each}
-						</div>
-					{/if}
-				</div>
-				<div>
-					<button on:click={() => (pantIsOpen = !pantIsOpen)}>Pants</button>
-
-					{#if pantIsOpen}
-						<div class="dropbuttons">
-							{#each pantItems as item, index}
-								<button value={index} on:click={() => (pantIsOpen = !pantIsOpen)}>{item}</button>
-							{/each}
-						</div>
-					{/if}
-				</div>
+						{#if pantIsOpen}
+							<div class="dropbuttons">
+								{#each data.pantsItems as item, index}
+									<!-- <a href="#top">
+						{pitem}
+						</a> -->
+									<button class={index === selectedPants} value={index} on:click={() => selectPants(index)}>{item}</button>
+								{/each}
+							</div>
+						{/if}
+					</div>
+				{/await}
 			</div>
             <p>&nbsp;</p>
             <p>&nbsp;</p>
             <p>&nbsp;</p>
             <div class="generate">
-                <button>Generate!</button>
+				<form method="GET" action="http://localhost:5173">
+					<button type="submit" on:click={generateImage}>Generate!</button>
+				</form>
             </div>
 			<!-- <div class="directions-title">
 				DIRECTIONS
@@ -195,6 +247,9 @@
     button {
         font-family: "Nova Square", sans-serif;
     }
+	button.highlight {
+		background-color: lightblue;
+	}
     div.nav-logo {
         margin-left: 30px;
         margin-bottom: 15px;
