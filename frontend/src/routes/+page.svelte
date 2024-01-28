@@ -96,6 +96,9 @@
 						{#await getShirts()}
 							<p>Loading...</p>
 						{:then data}
+							{#if data.length == 0}
+							<p>No shirts uploaded</p>
+							{/if}
 							<div class="dropbuttons">
 								{#each data as item, index}
 									<button class={item.id === selectedShirt} on:click={() => selectShirt(item.id)}>{item.name}</button>
@@ -108,8 +111,11 @@
 					<button on:click={() => (pantIsOpen = !pantIsOpen)}>Pants</button>
 					{#if pantIsOpen}
 						{#await getPants()}
-							<p>Loading...</p>
+						<p>Loading...</p>
 						{:then data}
+							{#if data.length == 0}
+							<p>No pants uploaded</p>
+							{/if}
 							<div class="dropbuttons">
 								{#each data as item, index}
 									<button class={item.id === selectedPants} on:click={() => selectPants(item.id)}>{item.name}</button>
