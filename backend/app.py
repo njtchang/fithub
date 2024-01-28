@@ -11,17 +11,18 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
+    print(request.files)
     uploaded_file = request.files['file']
     if uploaded_file.filename != '':
         file_ext = os.path.splitext(uploaded_file.filename)[1]
         if file_ext not in app.config['UPLOAD_EXTENSIONS']:
             abort(400)
         uploaded_file.save(f'images/{uploaded_file.filename}')
-    return redirect(url_for('/'))
+    return redirect('http://localhost:5173')
 
-@app.route('/img', methods=['GET'])
-def send_image():
-    file_path = f'./images/shirt.png'
+@app.route('/img/<filename>', methods=['GET'])
+def send_image(filename):
+    file_path = f'./images/{filename}.png'
     return send_file(file_path)
 
 @app.route('/generate')

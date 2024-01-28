@@ -1,18 +1,27 @@
 <script>
-	/**
-	 * @type any
-	 */
-	let files;
+// @ts-nocheck
 
-    const formData = new FormData(files)
+	function send() {
+        const formData = new FormData();
+        const files = document.getElementById("file");
+        formData.append("file", files?.files[0]);
+        const requestOptions = {
+            headers: {
+                "Content-Type": files.files[0].contentType,
+            },
+            mode: "no-cors",
+            method: "POST",
+            files: files.files[0],
+            body: formData,
+        };
+        console.log(requestOptions);
 
-    fetch("https://localhost:5173/img", {
-        method: "POST",
-        body: formData,
-        headers: {
-            "Content-Type": "multipart/form-data"
-        }
-    });
+        fetch("http://localhost:5001/upload", requestOptions).then(
+            (response) => {
+                console.log(response.data);
+            }
+        );
+    }
 </script>
 
 <nav>
@@ -42,20 +51,19 @@
     <div class="instruction">
         Upload Photo Here
     </div>
-    <form>
+    <form method="GET" action="http://localhost:5173">
         <div class = "buttonlabel">
             <label for="file"></label>
             <input
                 type="file"
                 id="file"
-                name="fileToUpload"
+                name="file"
                 accept=".jpg, .jpeg, .png, .webp"
-                bind:files
                 required
             />
         </div>
         <div class = "submit-button">
-            <button type="submit">Submit</button>
+            <button type="submit" on:click={send}>Submit</button>
         </div>
     </form>
 </div>
