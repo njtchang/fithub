@@ -79,7 +79,7 @@
 			<header>
 				<h1>Outfit</h1>
 			</header>
-			<img id="combo_outfit" src="src/lib/pictures/combo_outfit.png" alt="outfit" />
+			<img id="combo_outfit" src="src/lib/pictures/outfit-outline.png" alt="outfit" />
 		</div>
 		<div class="gallery-side">
 			<div class="directions-title">
