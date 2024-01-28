@@ -1,35 +1,29 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
 
 <script>
-    
-    /**
-	 * @type {any}
-	 */
-    let multiValue;
-	/**
-	 * @type {any}
-	 */
-	let files;
+// @ts-nocheck
 
-    /**
-	 * @type {any}
-	 */
-
-
-    /**
-	 * @param {HTMLFormElement | undefined} files
-	 */
-    function sendFiles(files) {
-        const formData = new FormData(files)
-        fetch("https://localhost:5173/img", {
-            method: "POST",
-            body: formData,
+	function sendImage(clothing) {
+        const formData = new FormData();
+        const files = document.getElementById(clothing+"file");
+        formData.append("file", files?.files[0]);
+        const requestOptions = {
             headers: {
-                "Content-Type": "multipart/form-data"
-            }
-        });
-    }
+                "Content-Type": files.files[0].contentType,
+            },
+            mode: "no-cors",
+            method: "POST",
+            files: files.files[0],
+            body: formData,
+        };
+        console.log(requestOptions);
 
+        fetch("http://localhost:5001/upload/" + clothing, requestOptions).then(
+            (response) => {
+                console.log(response.data);
+            }
+        );
+    }
 </script>
 
 <nav>
@@ -55,20 +49,19 @@
     <div class="option">
         Upload Shirt Photo Here
     </div>
-    <form>
+    <form method="GET" action="http://localhost:5173">
         <div class = "buttonlabel">
             <label for="file"></label>
             <input
                 type="file"
-                id="file"
+                id="shirtfile"
                 name="fileToUpload"
                 accept=".jpg, .jpeg, .png, .webp"
-                bind:files
                 required
             />
         </div>
         <div class = "submit-button">
-            <button type="submit">Submit</button>
+            <button type="submit" on:click={() => sendImage("shirt")}>Submit</button>
         </div>
     </form>
 </div>
@@ -82,20 +75,19 @@
     <div class="option">
         Upload Pants Photo Here
     </div>
-    <form>
+    <form method="GET" action="http://localhost:5173">
         <div class = "buttonlabel">
             <label for="file"></label>
             <input
                 type="file"
-                id="file"
-                name="fileToUpload"
+                id="pantsfile"
+                name="file"
                 accept=".jpg, .jpeg, .png, .webp"
-                bind:files
                 required
             />
         </div>
         <div class = "submit-button">
-            <button type="submit">Submit</button>
+            <button type="submit" on:click={() => sendImage("pants")}>Submit</button>
         </div>
     </form>
 </div>
