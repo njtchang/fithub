@@ -44,6 +44,12 @@
 				document.querySelector('#combo_outfit').src = url;
 			});
 	}
+
+	async function resetClothing() {
+		const res = await fetch('http://localhost:5001/resetClothing', {method: 'DELETE'});
+		const data = await res.json();
+		return data;
+	}
 </script>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nova Square" />
@@ -88,7 +94,9 @@
 				Click the dropdown menus to access shirts and pants. Once you have chosen your desired
 				combination, click the generate button to create your new outfit!
 			</div>
-			<button class="reset-button">Reset</button>
+			<form method="GET" action="http://localhost:5173">
+				<button class="reset-button" on:click={resetClothing}>Reset</button>
+			</form>
 			<header>
 				<h1>Gallery</h1>
 			</header>

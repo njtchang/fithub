@@ -98,6 +98,17 @@ def deleteClothing(clothingId):
     except:
         return 'There was a problem deleting the clothing'
 
+@app.route('/resetClothing', methods=['DELETE'])
+def resetClothing():
+    try:
+        Clothing.query.delete()
+        db.session.commit()
+    except:
+        return 'There was a problem resetting the clothing'
+    
+    for filepath in os.listdir('images/'):
+        if os.path.splitext(filepath)[1] == '.png':
+            os.remove(filepath)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
