@@ -1,24 +1,45 @@
-from flask import Flask, abort, render_template, request, redirect, url_for, send_file
+from flask import Flask, abort, render_template, request, redirect, url_for, send_file, jsonify
+import json
+from flask_sqlalchemy import SQLAlchemy
 import os
 from multiprocessing import Value
 from image_layering import create_file
 from flask_cors import CORS
 
 
-shirt_counter = Value('i', 0)
-pants_counter = Value('i', 0)
+counter = Value('i', 0)
+
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///clothes.db'
+db = SQLAlchemy(app)
+app.app_context().push()
 CORS(app)
+
+class Clothing(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    clothingType = db.Column(db.String(5), nullable=False)
+    name = db.Column(db.String(20), nullable=False)
+
+    def __repr__(self):
+        return f'<Clothing {self.id}>'
+    
+class ClothingObj:
+    def __init__(self, id, clothingType, name):
+        self.id = id
+        self.clothingType = clothingType
+        self.name = name
+        print(json.dumps(self.to_dict()))
+
+    def to_dict(self):
+        return {'id': self.id, 'clothingType': self.clothingType, 'name': self.name}
 
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png']
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/upload/<clothingName>', methods=['POST'])
-def upload_file(clothingName):
+@app.route('/upload/<clothingType>/<clothingName>', methods=['POST'])
+def upload_file(clothingType, clothingName):
     uploaded_file = request.files['file']
+
+    print(clothingName)
 
     if uploaded_file.filename != '':
         file_ext = os.path.splitext(uploaded_file.filename)[1]
@@ -26,37 +47,50 @@ def upload_file(clothingName):
         if file_ext not in app.config['UPLOAD_EXTENSIONS']:
             abort(400)
         
-        if clothingName == 'shirt':
-            with shirt_counter.get_lock():
-                count = shirt_counter.value
-                shirt_counter.value += 1
-                print('shirt', count)
-        elif clothingName == 'pants':
-            with pants_counter.get_lock():
-                count = pants_counter.value
-                pants_counter.value += 1
-                print('pants', count)
+        with counter.get_lock():
+            initial_count = counter.value
+        if initial_count <= 20:
+            with counter.get_lock():
+                counter.value += 1
+            new_clothing = Clothing(clothingType=clothingType, name=clothingName)
+            
+            try:
+                db.session.add(new_clothing)
+                db.session.commit()
+            except:
+                return 'There was an issue adding clothing'
 
-        if count <= 20:
-            uploaded_file.save(f'images/{clothingName}{count}.png')
+            print('uploaded!')
+            uploaded_file.save(f'images/{clothingType}{new_clothing.id}.png')
 
     return redirect('http://localhost:5173')
 
-@app.route('/generate', methods=['POST'])
-def generate_outfit():
-    shirt_id = request.args.get('shirtId', 0)
-    pants_id = request.args.get('pantsId', 0)
-    create_file(shirt_id, pants_id)
+@app.route('/generate/<shirtId>/<pantsId>', methods=['POST'])
+def generate_outfit(shirtId, pantsId):
+    create_file(shirtId, pantsId)
     return send_file(f'./images/combo_outfit.png')
 
-@app.route('/clothingCounts', methods=['GET'])
-def clothing_counts():
-    with shirt_counter.get_lock():
-        shirt_count = shirt_counter.value
-        print(shirt_count)
-    with pants_counter.get_lock():
-        pants_count = pants_counter.value
-    return {'shirtCount': shirt_count, 'pantsCount': pants_count}
+@app.route('/getShirts', methods=['GET'])
+def get_shirts():
+    shirts = Clothing.query.filter(Clothing.clothingType == 'shirt').all()
+    print(shirts)
+    return [ClothingObj(shirt.id, shirt.clothingType, shirt.name).to_dict() for shirt in shirts]
+
+@app.route('/getPants', methods=['GET'])
+def get_pants():
+    pants = Clothing.query.filter(Clothing.clothingType == 'pants').all()
+    return [ClothingObj(pant.id, pant.clothingType, pant.name).to_dict() for pant in pants]
+
+@app.route('/deleteClothing/<clothingId>', methods=['DELETE'])
+def deleteClothing(clothingId):
+    clothing_to_delete = Clothing.query.get_or_404(clothingId)
+
+    try:
+        db.session.delete(clothing_to_delete)
+        db.session.commit()
+        return redirect('http://localhost:5173')
+    except:
+        return 'There was a problem deleting the clothing'
 
 
 if __name__ == '__main__':

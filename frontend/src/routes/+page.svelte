@@ -5,21 +5,18 @@
 	let shirtIsOpen = false;
 	let pantIsOpen = false;
 
-	async function getClothingCounts() {
-		const res = await fetch('http://localhost:5001/clothingCounts');
+	async function getShirts() {
+		const res = await fetch('http://localhost:5001/getShirts');
 		const data = await res.json();
-		
-		let shirtItems = [];
-		for (let i = 0; i < data.shirtCount; i++) {
-			shirtItems.push('Shirt ' + (i+1));
-		}
-		let pantsItems = [];
-		for (let i = 0; i < data.pantsCount; i++) {
-			pantsItems.push('Pant ' + (i+1));
-		}
-		return { shirtItems: shirtItems, pantsItems: pantsItems };
+		console.log(JSON.stringify(data[0]))
+		return data;
 	}
-
+	async function getPants() {
+		const res = await fetch('http://localhost:5001/getPants');
+		const data = await res.json();
+		return data;
+	}
+	
 	let selectedShirt = -1;
 	let selectedPants = -1;
 
@@ -32,9 +29,6 @@
 	}
 
 	function generateImage() {
-        const formData = new FormData();
-        formData.append("shirtId", selectedShirt);
-        formData.append("pantsId", selectedPants);
         const requestOptions = {
             method: "POST",
 			headers: {
@@ -43,7 +37,7 @@
         };
         console.log(requestOptions);
 
-		fetch("http://localhost:5001/generate", requestOptions)
+		fetch(`http://localhost:5001/generate/${selectedShirt}/${selectedPants}`, requestOptions)
 		.then(response => response.blob())
 		.then(blob => {
 			const url = URL.createObjectURL(blob);
@@ -90,34 +84,34 @@
 				<h1>Gallery</h1>
 			</header>
 			<div class="menu">
-				{#await getClothingCounts()}
-					<p>Loading...</p>
-				{:then data}
-					<div>
-						<button on:click={() => (shirtIsOpen = !shirtIsOpen)}>Shirts</button>
-						{#if shirtIsOpen}
-							<div class="dropbuttons">
-								{#each data.shirtItems as item, index}
-									<button class={index === selectedShirt} value={index} on:click={() => selectShirt(index)}>{item}</button>
-								{/each}
-							</div>
-						{/if}
-					</div>
-					<div>
-						<button on:click={() => (pantIsOpen = !pantIsOpen)}>Pants</button>
-
-						{#if pantIsOpen}
-							<div class="dropbuttons">
-								{#each data.pantsItems as item, index}
-									<!-- <a href="#top">
-						{pitem}
-						</a> -->
-									<button class={index === selectedPants} value={index} on:click={() => selectPants(index)}>{item}</button>
-								{/each}
-							</div>
-						{/if}
-					</div>
-				{/await}
+				<div>
+					<button on:click={() => (shirtIsOpen = !shirtIsOpen)}>Shirts</button>
+					{#if shirtIsOpen}
+						{#await getShirts()}
+						<p>Loading...</p>
+						{:then data}
+						<div class="dropbuttons">
+							{#each data as item, index}
+								<button class={item.id === selectedShirt} on:click={() => selectShirt(item.id)}>{item.name}</button>
+							{/each}
+						</div>
+						{/await}
+					{/if}
+				</div>
+				<div>
+					<button on:click={() => (pantIsOpen = !pantIsOpen)}>Pants</button>
+					{#if pantIsOpen}
+						{#await getPants()}
+						<p>Loading...</p>
+						{:then data} 
+						<div class="dropbuttons">
+							{#each data as item, index}
+								<button class={item.id === selectedPants} on:click={() => selectPants(item.id)}>{item.name}</button>
+							{/each}
+						</div>
+						{/await}
+					{/if}
+				</div>
 			</div>
             <p>&nbsp;</p>
             <p>&nbsp;</p>

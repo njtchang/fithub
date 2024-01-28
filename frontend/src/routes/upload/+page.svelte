@@ -5,6 +5,7 @@
 		const formData = new FormData();
 		const files = document.getElementById(clothing + 'file');
 		formData.append('file', files?.files[0]);
+		const text = document.getElementById(clothing + 'Name').value;
 		const requestOptions = {
 			headers: {
 				'Content-Type': files.files[0].contentType
@@ -12,12 +13,12 @@
 			mode: 'no-cors',
 			method: 'POST',
 			files: files.files[0],
-			body: formData
+			body: formData,
 		};
 		console.log(requestOptions);
 
-		fetch('http://localhost:5001/upload/' + clothing, requestOptions).then((response) => {
-			console.log(response.data);
+		fetch(`http://localhost:5001/upload/${clothing}/${text}`, requestOptions).then((response) => {
+			console.log('response: ' + response.data);
 		});
 	}
 </script>
@@ -48,7 +49,7 @@
 
 <div class="block-text">
 	<br />
-	1. Please ensure that the shirt/pants is ENTIRELY within the edges of the photo. <br /><br />
+	1. Please ensure that the shirt/pants are ENTIRELY within the edges of the photo. <br /><br />
 	2. Please ensure the lighting to be not too bright nor too dim. <br /><br />
 	3. Please ensure the background of the photo to be reasonably in good contrast with the shirt/pants.
 	<br />
@@ -60,7 +61,7 @@
 	<div class="instruction">Upload Shirt Photo Here</div>
 	<form method="GET" action="http://localhost:5173">
 		<div class="buttonlabel">
-			<label for="file"></label>
+			<label for="shirtfile"></label>
 			<input
 				type="file"
 				id="shirtfile"
@@ -70,7 +71,7 @@
 			/>
 		</div>
         <div class="text-field">
-            Enter Description: <input type="text">
+            Enter Name: <input type="text" on:keypress={() => event.key != ' '} id="shirtName" maxlength="20" required>
         </div>
 		<div class="submit-button">
 			<button type="submit" on:click={() => sendImage('shirt')}>Submit</button>
@@ -84,11 +85,17 @@
 	<div class="instruction2">Upload Pants Photo Here</div>
 	<form method="GET" action="http://localhost:5173">
 		<div class="buttonlabel">
-			<label for="file"></label>
-			<input type="file" id="pantsfile" name="file" accept=".jpg, .jpeg, .png, .webp" required />
+			<label for="pantsfile"></label>
+			<input 
+                type="file"
+                id="pantsfile"
+                name="fileToUpload"
+                accept=".jpg, .jpeg, .png, .webp"
+                required
+            />
 		</div>
         <div class="text-field">
-            Enter Description: <input type="text">
+            Enter Name: <input type="text" on:keypress={() => event.key != ' '} id="pantsName" maxlength="20" required>
         </div>
 		<div class="submit-button">
 			<button type="submit" on:click={() => sendImage('pants')}>Submit</button>
