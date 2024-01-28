@@ -62,7 +62,7 @@ def upload_file(clothingType, clothingName):
                 return 'There was an issue adding clothing to db'
 
             print('uploaded!')
-            save_path = f'images/{clothingType}{new_clothing.id}.{file_ext}'
+            save_path = f'images/{clothingType}{new_clothing.id}{file_ext}'
             uploaded_file.save(save_path)
             if file_ext == '.jpg':
                 img = Image.open(save_path)
@@ -107,8 +107,10 @@ def resetClothing():
         return 'There was a problem resetting the clothing'
     
     for filepath in os.listdir('images/'):
+        print(filepath)
         if os.path.splitext(filepath)[1] == '.png':
-            os.remove(filepath)
+            os.remove(f'images/{filepath}')
+    return redirect('http://localhost:5173')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
