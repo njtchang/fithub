@@ -48,8 +48,8 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
-<div>
-    <div class="option">
+<div class="card">
+    <div class="instruction">
         Upload Shirt Photo Here
     </div>
     <form method="GET" action="http://localhost:5173">
@@ -74,8 +74,8 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
-<div>
-    <div class="option">
+<div class="card2">
+    <div class="instruction2">
         Upload Pants Photo Here
     </div>
     <form method="GET" action="http://localhost:5173">
@@ -97,6 +97,17 @@
 
 <style>
 
+    .card {
+        border: solid rgb(3, 76, 30) 5px;
+        border-radius: 12px;
+        background-color: rgb(178, 203, 186);
+    }
+    .card2 {
+        border: solid rgb(117, 78, 64) 5px;
+        border-radius: 12px;
+        background-color: rgb(242, 236, 221);
+    }
+
     div.nav-logo>img{
         width: 200px;
         length: 200px;
@@ -112,13 +123,26 @@
         text-align: center;
         padding-top: 10px;
         padding-bottom: 10px;
-
+        border-radius: 12px;
+        font-family: "Nova Square", sans-serif;
     }
 
-    .option {
+    .instruction {
         text-align: center;
+        font-family: "Nova Square", sans-serif;
+        font-size: 25px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        color: rgb(3, 76, 30);
     }
-
+    .instruction2 {
+        text-align: center;
+        font-family: "Nova Square", sans-serif;
+        font-size: 25px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        color: rgb(117, 78, 64);
+    }
     nav {
 		display: flex;
 		background-color: lightblue;
