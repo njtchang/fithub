@@ -1,5 +1,6 @@
 from rembg import remove
 from PIL import Image
+import os
 
 # removes the background of the image
 def removebg(input_path):
@@ -36,14 +37,15 @@ def measure(box, pnglist, clothingtype):
     item_len = (half_len_index - index) * 2
     return item_len
 
-def process_images(genre):    
+def process_images(genre):
+    current_directory = os.path.dirname(os.path.abspath(__file__))
     if genre == 'shirt':
         pic_path = 'C:\\Users\\stsha\\fithub\\backend\\tshirt.png'
-        output_path = 'C:\\Users\\stsha\\fithub\\backend\\tshirtnobg.png'
+        output_path = str(os.path.join(current_directory, 'tshirtnobg.png'))
     if genre == 'pants':
         pic_path = 'C:\\Users\\stsha\\fithub\\backend\\pants.png'
-        output_path = 'C:\\Users\\stsha\\fithub\\backend\\pantsnobg.png'
+        output_path = str(os.path.join(current_directory, 'pantsnobg.png'))
     nobg = removebg(pic_path)
     info = crop(nobg, output_path)
-    length = measure(info[0], info[1], piece)
+    length = measure(info[0], info[1], genre)
     return length
