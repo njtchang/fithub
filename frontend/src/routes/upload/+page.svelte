@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nova Square">
 
 <script>
 // @ts-nocheck
@@ -27,17 +27,20 @@
 </script>
 
 <nav>
-    <div class="nav-logo">
-        <img src="src/lib/pictures/logo.png" alt="Your Logo" />
+	<div class="nav-logo">
+		<img src="src/lib/pictures/logo.png" alt="Your Logo" />
+	</div>
+    <div class="title">
+        <img src="src/lib/pictures/title.png" alt="title" />
     </div>
-    <ul>
-        <li>
-            <a href="/">Home</a>
-        </li>
-        <li>
-            <a href="/upload">Upload</a>
-        </li>
-    </ul>
+	<ul>
+		<li>
+			<a href="/">Home</a>
+		</li>
+		<li>
+			<a href="/upload">Upload</a>
+		</li>
+	</ul>
 </nav>
 
 <p>&nbsp;</p>
@@ -45,8 +48,8 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
-<div>
-    <div class="option">
+<div class="card">
+    <div class="instruction">
         Upload Shirt Photo Here
     </div>
     <form method="GET" action="http://localhost:5173">
@@ -71,8 +74,8 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
-<div>
-    <div class="option">
+<div class="card2">
+    <div class="instruction2">
         Upload Pants Photo Here
     </div>
     <form method="GET" action="http://localhost:5173">
@@ -94,6 +97,17 @@
 
 <style>
 
+    .card {
+        border: solid rgb(3, 76, 30) 5px;
+        border-radius: 12px;
+        background-color: rgb(178, 203, 186);
+    }
+    .card2 {
+        border: solid rgb(117, 78, 64) 5px;
+        border-radius: 12px;
+        background-color: rgb(242, 236, 221);
+    }
+
     div.nav-logo>img{
         width: 200px;
         length: 200px;
@@ -109,29 +123,64 @@
         text-align: center;
         padding-top: 10px;
         padding-bottom: 10px;
-
+        border-radius: 12px;
+        font-family: "Nova Square", sans-serif;
     }
 
-    .option {
+    .instruction {
         text-align: center;
+        font-family: "Nova Square", sans-serif;
+        font-size: 25px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        color: rgb(3, 76, 30);
+    }
+    .instruction2 {
+        text-align: center;
+        font-family: "Nova Square", sans-serif;
+        font-size: 25px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        color: rgb(117, 78, 64);
+    }
+    nav {
+		display: flex;
+		background-color: lightblue;
+        font-family: "Nova Square", sans-serif;
+        border-radius: 12px;
+	}
+    div.nav-logo {
+        margin-left: 30px;
+        margin-bottom: 15px;
+    }
+    div.title>img{
+        width: 750px;
+        height: 150px;
+        z-index: -1;
+        margin-left: 90px;
+        margin-top: 25px;
     }
 
-    nav {
-        display: flex;
-        background-color: lightblue;
+	ul {
+		display: flex;
+		margin-top: 30px;
+		margin-left: auto;
+		list-style: none;
+		font-size: 35px;
+	}
+	li {
+		margin-right: 80px;
+        margin-top: 40px;
+	}
+    a {
+        text-decoration: none;
+        color: darkblue;
     }
-    ul {
-        display: flex;
-        margin-top: 30px;
-        margin-left: auto;
-        list-style: none;
-        font-size: 2em;
+    a:focus {
+        color: rgb(87, 87, 205);
     }
-    li {
-        margin-right: 80px;
-        font-weight: 900;
-        font-family: "Quicksand", sans-serif;
-        color: blue;
+    a:hover {
+        color: purple;
     }
 
 </style>
