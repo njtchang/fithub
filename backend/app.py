@@ -1,6 +1,7 @@
 from flask import Flask, abort, render_template, request, redirect, url_for, send_file
 import os
 from multiprocessing import Value
+from image_layering import create_file
 
 
 shirt_counter = Value('i', 0)
@@ -25,29 +26,25 @@ def upload_file(clothingName):
         
         if clothingName == 'shirt':
             with shirt_counter.get_lock():
-                shirt_counter.value += 1
                 count = shirt_counter.value
+                shirt_counter.value += 1
                 print('shirt', count)
         elif clothingName == 'pants':
             with pants_counter.get_lock():
-                pants_counter.value += 1
                 count = pants_counter.value
+                pants_counter.value += 1
                 print('pants', count)
 
         uploaded_file.save(f'images/{clothingName}{count}.png')
 
     return redirect('http://localhost:5173')
 
-@app.route('/img/<filename>', methods=['GET'])
-def send_image(filename):
-    file_path = f'./images/{filename}.png'
-    return send_file(file_path)
-
-@app.route('/generate')
+@app.route('/generate', methods=['POST'])
 def generate_outfit():
-    shirt_id = request.args.get('shirtId', 1)
-    pants_id = request.args.get('pantsId', 1)
-    # image_layering.run(shirt_id, pants_id)
+    shirt_id = request.args.get('shirtId', 0)
+    pants_id = request.args.get('pantsId', 0)
+    create_file(shirt_id, pants_id)
+    return send_file(f'./images/combo_outfit.png')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

@@ -37,13 +37,13 @@ def measure(box, pnglist, clothingtype):
     item_len = (half_len_index - index) * 2
     return item_len
 
-def process_images(genre):
+def process_images(genre: str, id: int):
     current_directory = os.path.dirname(os.path.abspath(__file__))
     if genre == 'shirt':
-        pic_path = str(os.path.join(current_directory, 'images', 'tshirt.png'))
-        output_path = str(os.path.join(current_directory, 'images', 'tshirtnobg.png'))
+        pic_path = str(os.path.join(current_directory, 'images', f'shirt{id}.png'))
+        output_path = str(os.path.join(current_directory, 'images', 'shirtnobg.png'))
     if genre == 'pants':
-        pic_path = str(os.path.join(current_directory, 'images', 'pants.png'))
+        pic_path = str(os.path.join(current_directory, 'images', f'pants{id}.png'))
         output_path = str(os.path.join(current_directory, 'images', 'pantsnobg.png'))
     nobg = removebg(pic_path)
     info = crop(nobg, output_path)
