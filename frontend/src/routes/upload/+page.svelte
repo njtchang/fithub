@@ -3,9 +3,9 @@
 <script>
 // @ts-nocheck
 
-	function send() {
+	function sendImage(clothing) {
         const formData = new FormData();
-        const files = document.getElementById("file");
+        const files = document.getElementById(clothing+"file");
         formData.append("file", files?.files[0]);
         const requestOptions = {
             headers: {
@@ -18,7 +18,7 @@
         };
         console.log(requestOptions);
 
-        fetch("http://localhost:5001/upload", requestOptions).then(
+        fetch("http://localhost:5001/upload/" + clothing, requestOptions).then(
             (response) => {
                 console.log(response.data);
             }
@@ -49,19 +49,19 @@
     <div class="option">
         Upload Shirt Photo Here
     </div>
-    <form>
+    <form method="GET" action="http://localhost:5173">
         <div class = "buttonlabel">
             <label for="file"></label>
             <input
                 type="file"
-                id="file"
+                id="shirtfile"
                 name="fileToUpload"
                 accept=".jpg, .jpeg, .png, .webp"
                 required
             />
         </div>
         <div class = "submit-button">
-            <button type="submit">Submit</button>
+            <button type="submit" on:click={() => sendImage("shirt")}>Submit</button>
         </div>
     </form>
 </div>
@@ -80,14 +80,14 @@
             <label for="file"></label>
             <input
                 type="file"
-                id="file"
+                id="pantsfile"
                 name="file"
                 accept=".jpg, .jpeg, .png, .webp"
                 required
             />
         </div>
         <div class = "submit-button">
-            <button type="submit" on:click={send}>Submit</button>
+            <button type="submit" on:click={() => sendImage("pants")}>Submit</button>
         </div>
     </form>
 </div>
